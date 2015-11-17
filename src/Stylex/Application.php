@@ -9,11 +9,12 @@ class Application extends \Silex\Application {
   public function __construct(array $values = []) {
     parent::__construct($values);
 
-    // $this['debug'] = TRUE;
+    $this['debug'] = TRUE;
 
     // Default values
     $values += [
       'templates' => 'templates',
+      'pages' => 'pages',
       'data' => 'data',
       'content' => 'content',
       'twig.options' => ['strict_variables' => FALSE],
@@ -60,7 +61,7 @@ class Application extends \Silex\Application {
     // Setup the front controller
     $this->get('/{page}', function ($page) {
       $this['twig']->addGlobal('current_page', '/' . (($page == 'index') ? '' : $page));
-      return $this->render($page . '.html');
+      return $this->render($values['pages'] . '/' . $page . '.twig');
     })->value('page', 'index');
   }
 }
